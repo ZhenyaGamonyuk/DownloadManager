@@ -8,13 +8,13 @@ using System.Windows.Forms;
 
 namespace DownloadManager
 {
-    public partial class FtpForm : Form
+    public partial class DownloadFtp : Form
     {
         private MainForm _mainForm;
         FtpClient ftp;
         string serverDir = "";
 
-        public FtpForm(MainForm frm)
+        public DownloadFtp(MainForm frm)
         {
             InitializeComponent();
             _mainForm = frm;
@@ -66,7 +66,7 @@ namespace DownloadManager
             {
                 MessageBox.Show(ex.Message);
             }
-            this.Text = "FTP-client";
+
         }
 
         private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -157,15 +157,15 @@ namespace DownloadManager
                             await ftp.DownloadFile(textBox4.Text, serverDir, directory);
                             progressBar2.Value++;
 
-                            Database.FilesDataRow row = App.Database.FilesData.NewFilesDataRow();
+                            Database.FilesDataRow row = DatabaseManager.Database.FilesData.NewFilesDataRow();
                             row.Url = textBox1.Text;
                             row.FileName = item.Text;
                             row.FileSize = item.SubItems[3].Text;
                             row.DateTime = DateTime.Now;
                             row.Path = textBox4.Text + item.Text;
-                            App.Database.FilesData.AddFilesDataRow(row);
-                            App.Database.AcceptChanges();
-                            App.Database.WriteXml(string.Format("{0}/data.dat", Application.StartupPath));
+                            DatabaseManager.Database.FilesData.AddFilesDataRow(row);
+                            DatabaseManager.Database.AcceptChanges();
+                            DatabaseManager.Database.WriteXml(string.Format("{0}/data.dat", Application.StartupPath));
                             ListViewItem item1 = new ListViewItem(row.Id.ToString());
                             item1.SubItems.Add(row.Url);
                             item1.SubItems.Add(row.FileName);
@@ -186,15 +186,15 @@ namespace DownloadManager
                         await ftp.DownloadFile(textBox4.Text, serverDir, directory);
                         progressBar2.Value++;
 
-                        Database.FilesDataRow row = App.Database.FilesData.NewFilesDataRow();
+                        Database.FilesDataRow row = DatabaseManager.Database.FilesData.NewFilesDataRow();
                         row.Url = textBox1.Text;
                         row.FileName = item.Text;
                         row.FileSize = item.SubItems[3].Text;
                         row.DateTime = DateTime.Now;
                         row.Path = textBox4.Text + item.Text;
-                        App.Database.FilesData.AddFilesDataRow(row);
-                        App.Database.AcceptChanges();
-                        App.Database.WriteXml(string.Format("{0}/data.dat", Application.StartupPath));
+                        DatabaseManager.Database.FilesData.AddFilesDataRow(row);
+                        DatabaseManager.Database.AcceptChanges();
+                        DatabaseManager.Database.WriteXml(string.Format("{0}/data.dat", Application.StartupPath));
                         ListViewItem item1 = new ListViewItem(row.Id.ToString());
                         item1.SubItems.Add(row.Url);
                         item1.SubItems.Add(row.FileName);
@@ -281,9 +281,9 @@ namespace DownloadManager
 
     class FtpClient
     {
-        private ListView listView1 = Application.OpenForms["FtpForm"].Controls["listView1"] as ListView;
-        private Label label1 = Application.OpenForms["FtpForm"].Controls["label1"] as Label;
-        private ProgressBar progressBar1 = Application.OpenForms["FtpForm"].Controls["progressBar1"] as ProgressBar;
+        private ListView listView1 = Application.OpenForms["DownloadFtp"].Controls["listView1"] as ListView;
+        private Label label1 = Application.OpenForms["DownloadFtp"].Controls["label1"] as Label;
+        private ProgressBar progressBar1 = Application.OpenForms["DownloadFtp"].Controls["progressBar1"] as ProgressBar;
 
         private string _Host;
         private string _UserName;

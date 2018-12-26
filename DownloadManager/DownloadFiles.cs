@@ -1,18 +1,17 @@
 ﻿using HtmlAgilityPack;
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
 
 namespace DownloadManager
 {
-    public partial class FilesForm : Form
+    public partial class DownloadFiles : Form
     {
         private MainForm _mainForm;
         WebClient client;
 
-        public FilesForm(MainForm frm)
+        public DownloadFiles(MainForm frm)
         {
             InitializeComponent();
             _mainForm = frm;

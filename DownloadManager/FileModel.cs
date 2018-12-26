@@ -23,9 +23,9 @@ namespace DownloadManager
         public int FilesCount { get; set; }
         private MainForm _mainForm;
 
-        private ProgressBar progressBar1 = Application.OpenForms["FilesForm"].Controls["prgrBar1"] as ProgressBar;
-        private ProgressBar progressBar2 = Application.OpenForms["FilesForm"].Controls["prgrBar2"] as ProgressBar;
-        private ListView listView1 = Application.OpenForms["FilesForm"].Controls["listView1"] as ListView;
+        private ProgressBar progressBar1 = Application.OpenForms["DownloadFiles"].Controls["prgrBar1"] as ProgressBar;
+        private ProgressBar progressBar2 = Application.OpenForms["DownloadFiles"].Controls["prgrBar2"] as ProgressBar;
+        private ListView listView1 = Application.OpenForms["DownloadFiles"].Controls["listView1"] as ListView;
 
         public FileModel(MainForm frm, int filesCount)
         {
@@ -96,15 +96,15 @@ namespace DownloadManager
                 client.DownloadProgressChanged += Client_DownloadProgressChanged;
                 client.DownloadFileAsync(Uri, path + FileName, $@"{path}{FileName}");
             }
-            Database.FilesDataRow row = App.Database.FilesData.NewFilesDataRow();
+            Database.FilesDataRow row = DatabaseManager.Database.FilesData.NewFilesDataRow();
             row.Url = Url;
             row.FileName = FileName;
             row.FileSize = item.SubItems[2].Text;
             row.DateTime = DateTime.Now;
             row.Path = $@"{path}{FileName}";
-            App.Database.FilesData.AddFilesDataRow(row);
-            App.Database.AcceptChanges();
-            App.Database.WriteXml(string.Format("{0}/data.dat", Application.StartupPath));
+            DatabaseManager.Database.FilesData.AddFilesDataRow(row);
+            DatabaseManager.Database.AcceptChanges();
+            DatabaseManager.Database.WriteXml(string.Format("{0}/data.dat", Application.StartupPath));
             ListViewItem item1 = new ListViewItem(row.Id.ToString());
             item1.SubItems.Add(row.Url);
             item1.SubItems.Add(row.FileName);

@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DownloadManager
 {
-    public partial class DownloadForm : Form
+    public partial class DownloadFile : Form
     {
-        public DownloadForm(MainForm frm)
+        public DownloadFile(MainForm frm)
         {
             InitializeComponent();
             _mainForm = frm;
@@ -39,15 +35,15 @@ namespace DownloadManager
 
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            Database.FilesDataRow row = App.Database.FilesData.NewFilesDataRow();
+            Database.FilesDataRow row = DatabaseManager.Database.FilesData.NewFilesDataRow();
             row.Url = Url;
             row.FileName = FileName;
             row.FileSize = (string.Format("{0:0.##} KB", FileSize / 1024));
             row.DateTime = DateTime.Now;
             row.Path = txtPath.Text;
-            App.Database.FilesData.AddFilesDataRow(row);
-            App.Database.AcceptChanges();
-            App.Database.WriteXml(string.Format("{0}/data.dat", Application.StartupPath));
+            DatabaseManager.Database.FilesData.AddFilesDataRow(row);
+            DatabaseManager.Database.AcceptChanges();
+            DatabaseManager.Database.WriteXml(string.Format("{0}/data.dat", Application.StartupPath));
             ListViewItem item = new ListViewItem(row.Id.ToString());
             item.SubItems.Add(row.Url);
             item.SubItems.Add(row.FileName);
